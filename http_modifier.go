@@ -25,7 +25,8 @@ func NewHTTPModifier(config *HTTPModifierConfig) *HTTPModifier {
 		len(config.ParamHashFilters) == 0 &&
 		len(config.Params) == 0 &&
 		len(config.Headers) == 0 &&
-		len(config.Methods) == 0 {
+		len(config.Methods) == 0 &&
+		len(config.HeaderDiffy) == 0 {
 		return nil
 	}
 
@@ -187,6 +188,19 @@ func (m *HTTPModifier) Rewrite(payload []byte) (response []byte) {
 			if f.src.Match(value) {
 				newValue := f.src.ReplaceAll(value, f.target)
 				payload = proto.SetHeader(payload, f.header, newValue)
+			}
+		}
+	}
+
+	if len(m.config.HeaderDiffy) > 0 {
+		path := proto.Path(payload)
+
+		for _, f := range m.config.HeaderDiffy {
+			if f.src.Match(path) {
+				path = f.src.ReplaceAll(path, f.target)
+				payload = proto.SetHeader(payload, []byte("Canonical-Resource"), path)
+
+				break
 			}
 		}
 	}

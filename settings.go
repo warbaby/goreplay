@@ -268,6 +268,8 @@ func init() {
 	flag.Var(&Settings.ModifierConfig.HeaderHashFilters, "http-header-limiter", "Takes a fraction of requests, consistently taking or rejecting a request based on the FNV32-1A hash of a specific header:\n\t gor --input-raw :8080 --output-http staging.com --http-header-limiter user-id:25%")
 	flag.Var(&Settings.ModifierConfig.ParamHashFilters, "http-param-limiter", "Takes a fraction of requests, consistently taking or rejecting a request based on the FNV32-1A hash of a specific GET param:\n\t gor --input-raw :8080 --output-http staging.com --http-param-limiter user_id:25%")
 
+	flag.Var(&Settings.ModifierConfig.HeaderDiffy, "http-diffy-header", "Set diffy Canonical-Resource header for first match of URI pattern:\n\tgor --input-raw :8080 --output-http staging.com --http-diffy-header /api/user/[0-9]+:/api/user --http-diffy-header \"([^?]+).*:$1\"")
+
 	// default values, using for tests
 	Settings.OutputFileConfig.SizeLimit = 33554432
 	Settings.OutputFileConfig.OutputFileMaxSize = 1099511627776

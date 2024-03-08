@@ -22,6 +22,8 @@ type HTTPModifierConfig struct {
 	Params                 HTTPParams                 `json:"http-set-param"`
 	Headers                HTTPHeaders                `json:"http-set-header"`
 	Methods                HTTPMethods                `json:"http-allow-method"`
+
+	HeaderDiffy URLRewriteMap `json:"http-diffy-header"`
 }
 
 // Handling of --http-allow-header, --http-disallow-header options
