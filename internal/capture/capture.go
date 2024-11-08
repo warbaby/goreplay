@@ -13,6 +13,7 @@ import (
 	"net"
 	"os"
 	"runtime"
+	"strconv"
 	"strings"
 	"sync"
 	"syscall"
@@ -441,6 +442,10 @@ func (l *Listener) PcapHandle(ifi pcap.Interface) (handle *pcap.Handle, err erro
 
 	if snap == 0 {
 		snap = 64<<10 + 200
+	}
+	if v := os.Getenv("GOR_SNAP_LEN"); v != "" {
+		snap, _ = strconv.Atoi(v)
+		fmt.Println("GOR_SNAP_LEN set", v, snap)
 	}
 
 	err = inactive.SetSnapLen(snap)
